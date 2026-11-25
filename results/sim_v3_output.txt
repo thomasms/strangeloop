@@ -1,0 +1,18 @@
+Part A -- size of the self and unity (seed 0, 200 x 200 steps)
+
+| agent | R (D9) | visited | |R/~1| | C_self (bits) | |R/~inf| | err(1) | err(2) | err(4) | NMI at K=4 |
+|---|---|---|---|---|---|---|---|---|---|
+| Thermostat + bit | {bit} | 2 | 2 | 1.00 | 2 | 0.167 | 0.000 | - | - |
+| P6 Thermostat with self-look-ahead | {bit} | 2 | 2 | 1.00 | 2 | 0.167 | 0.000 | - | - |
+| Reactive forager (v0) | {mode,heading} | 6 | 5 | 2.32 | 6 | 0.318 | 0.068 | 0.008 | mode 0.80, heading 0.34 |
+| P5 Learned self-model | {mode,heading} | 6 | 2 | 1.00 | 4 | 0.032 | 0.000 | - | - |
+| Unified goal agent | {g,h,c} | 10 | 7 | 2.81 | 10 | 0.538 | 0.331 | 0.122 | g 0.87, h 0.08, c 0.29 |
+| Modular agent | {mf,mw,h} | 8 | 8 | 3.00 | 8 | 0.261 | 0.171 | 0.095 | mf 0.57, mw 0.72, h 0.05 |
+
+Part B -- live self-fitting from own noisy experience (30 random starts, noise 0.1, 10 x 100 steps per round)
+
+| beta | fixed points | cycles (lengths) | none | mean rounds | distinct policies (72 states) | distinct lives | mean eps | mean eps_cf |
+|---|---|---|---|---|---|---|---|---|
+| 0.0 | 30 | 0 [] | 0 | 2.0 | 30 | 9 | 0.008 | 0.460 |
+| 0.8 | 17 | 13 [2] | 0 | 3.3 | 28 | 14 | 0.007 | 0.469 |
+| 2.0 | 0 | 12 [2, 4, 6, 8, 12] | 18 | 24.9 | 12 | 12 | 0.827 | 0.650 |

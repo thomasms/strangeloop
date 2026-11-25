@@ -30,4 +30,98 @@ Definitions used below
        and mean counterfactual error eps_cf > mean eps.
   P14  Exploratory. For beta = 2.0, the attractors include >= 2 behaviourally different
        selves (self-fulfilling self-models). No prediction for beta = 0 or 0.8.
+
+OUTCOME -- added after running code/sim_v3.py (results/sim_v3_output.txt).
+
+  P9   PARTLY FAILS. Thermostat + bit and P6: 1 bit (as predicted). Unified goal agent:
+       2.81 bits (as predicted). But the learned self-simulating forager is also 1 bit
+       (predicted >= 2): its behaviour depends on its self state only through 2 classes.
+       So C_self does NOT separate P6 from the learned forager. The forager's self-model
+       is large because it models how its RULES depend on the world, not because its
+       self STATE is large (compare R14: rules versus state).
+  P10  HOLDS, with a small margin. Unified: NMI(g) = 0.87. Modular: max NMI = 0.72 (mw).
+  P11  HOLDS (5 random relabellings per agent; checked below with 3).
+  P12  FAILS at beta = 2.0: 18 of 30 runs do not converge in 30 rounds, and the cycles
+       have lengths up to 12. Holds at beta = 0 (all fixed points) and 0.8 (fixed points
+       or 2-cycles).
+  P13  HOLDS for beta = 0 and 0.8 (eps = 0.008 and 0.007; eps_cf = 0.46 and 0.47).
+       FAILS at beta = 2.0 (eps = 0.83): no stable, accurate self.
+  P14  HOLDS as stated (12 different selves at beta = 2.0), but they are cycles, not
+       self-fulfilling fixed points. Measure ADDED AFTER THE RUN ("distinct lives": same
+       world and seeds, different action sequence): beta = 0 gives 9 different lives from
+       30 random starts, all fixed points. Several stable, accurate selves exist, and the
+       initial self-model selects which one the agent becomes.
 """
+import functools
+import os
+import random
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "code"))
+
+import sim_v3 as T  # noqa: E402
+
+
+@functools.lru_cache(maxsize=None)
+def sizes():
+    return {a.name: T.self_size(a, e) for a, e in T.size_agents()}
+
+
+@functools.lru_cache(maxsize=None)
+def live():
+    return dict(T.live_experiment())
+
+
+def test_p9_size_term_partly_fails():
+    z = sizes()
+    assert z["Thermostat + bit"]["C_self"] == 1.0
+    assert z["P6 Thermostat with self-look-ahead"]["C_self"] == 1.0
+    assert z["Unified goal agent"]["C_self"] >= 2.5
+    # predicted >= 2 bits; observed 1 bit -> the size term does not separate P6 from it
+    assert z["P5 Learned self-model"]["C_self"] == 1.0
+
+
+def test_p10_unity():
+    z = sizes()
+    assert z["Unified goal agent"]["nmi4"]["g"] >= 0.8
+    assert max(z["Modular agent"]["nmi4"].values()) < 0.8
+
+
+def test_p11_invariance_under_relabelling():
+    for agent, env in T.size_agents()[2:]:
+        a = sizes()[agent.name]
+        for k in range(3):
+            b = T.self_size(T.Relabelled(agent, a["Rv"], random.Random(k)), env)
+            assert (a["|R/~1|"], a["|R/~inf|"]) == (b["|R/~1|"], b["|R/~inf|"])
+            assert all(abs(a["curve"][K][0] - b["curve"][K][0]) < 1e-9 for K in a["curve"])
+
+
+def test_p12_convergence_fails_at_high_beta():
+    L = live()
+    assert all(r["status"] == "fixed" for r in L[0.0])
+    assert all(r["status"] in ("fixed", "cycle") and r["cycle_len"] <= 4 for r in L[0.8])
+    assert sum(r["status"] == "none" for r in L[2.0]) > 0          # prediction failed
+
+
+def test_p13_accurate_where_it_lives_only_for_low_beta():
+    for beta in (0.0, 0.8):
+        rows = live()[beta]
+        eps = sum(r["eps"] for r in rows) / len(rows)
+        cf = sum(r["eps_cf"] for r in rows) / len(rows)
+        assert eps <= 0.10 and cf > eps
+    done = [r for r in live()[2.0] if r["eps"] is not None]
+    assert sum(r["eps"] for r in done) / len(done) > 0.5            # prediction failed
+
+
+def test_p14_several_selves():
+    done = [r for r in live()[2.0] if r["eps"] is not None]
+    assert len({r["behaviour"] for r in done}) >= 2
+    # added after the run: several stable selves already at beta = 0
+    assert len({r["life"] for r in live()[0.0]}) >= 2
+
+
+if __name__ == "__main__":
+    for name, f in list(globals().items()):
+        if name.startswith("test_"):
+            f()
+            print("ok ", name)

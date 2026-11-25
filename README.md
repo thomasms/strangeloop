@@ -6,12 +6,13 @@ A minimal formal theory of Hofstadter's "strange loop" self, with a Python test 
 
 | | |
 |---|---|
-| Code | [`code/`](code/) — `sim_v0.py`, `sim_v1.py`, `sim_v2.py` (Python 3.8+, no dependencies) |
-| Tests | [`tests/`](tests/) — `test_results.py`, `test_adversarial_v2.py` |
+| Code | [`code/`](code/) — `sim_v0.py` to `sim_v3.py` (Python 3.8+, no dependencies) |
+| Tests | [`tests/`](tests/) — `test_results.py`, `test_adversarial_v2.py`, `test_v3.py` |
 | Test results | [`results/`](results/) — saved output of each simulation |
 
 ```bash
 python3 code/sim_v2.py
 python3 tests/test_results.py
 python3 tests/test_adversarial_v2.py
+python3 tests/test_v3.py
 ```
