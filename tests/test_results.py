@@ -48,6 +48,8 @@ def test_v1_fixed_point():
 
 
 def test_v1_low_capacity_d3_d8_independent():
+    # Regression of the v1 numbers only. The claim R15 is withdrawn in v2: gamma is
+    # observational; the interventional gamma_do is > 0.05 (tests/test_adversarial_v2.py, P7).
     a = sim_v1.LearnedSelfSimForager(decoder_inputs=("mode",), sees_w=("fd",))
     a.fit()
     r = sim_v1.evaluate(a, sim_v1.RingEnv())

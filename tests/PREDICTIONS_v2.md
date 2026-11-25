@@ -29,3 +29,34 @@ Honesty note: P1 and P7 were partly known from a quick probe on the v1 code
 | P6 | Thermostat with a one-step look-ahead on itself | λ_off > 0 → **passes D8′**. Accepted as a small, genuine loop (low grade). |
 | P7 | All agents with a self part, including the low-capacity agent | γ_do > 0. For the low-capacity agent γ_do > 0.05 while γ < 0.01 → **result R15 ("D3 and D8 are independent") does not survive** |
 | P8 | Reactive forager, state re-encoded (mode and food direction stored as one variable) | D9 gives a different split → **invariance fails. Known open hole 2**; fixed only by the coarse-graining definition (later step). |
+
+## Outcome (added after running `code/sim_v2.py`; see `results/sim_v2_output.md`)
+
+All eight predictions hold, with one exception: the "low grade" part of P6.
+
+| # | Result |
+|---|---|
+| P1 | λ = 0.46, ρ = 1, but φ = 0 and λ_off = 0 → fails D8′. ✔ |
+| P2 | φ = 0.50, λ_off = 0 → fails D8′. ✔ |
+| P3 | λ = 0, λ_off = 0 → fails D8 and D8′. ✔ |
+| P4 | Same action in 72/72 states; no decoder → fails D8. ✔ (decision still open) |
+| P5 | λ_off = 0.012 (fixed belief), 0.123 (learned), 0.147 (low capacity) → all pass D8′. ✔ |
+| P6 | λ_off = 0.16 → passes D8′. ✔ **But not "low grade":** its λ_off is higher than every forager's, and ρ = 1. ✘ |
+| P7 | γ_do > 0 for every agent with a self part. Low capacity: γ = 0.002, γ_do = 0.061 → R15 withdrawn. ✔ |
+| P8 | Split changes from R = {mode, heading} to R = {x, heading}. ✔ (hole 2 still open) |
+
+### Findings not predicted
+
+1. **The grade does not see size (P6).** A thermostat with a one-step look-ahead scores as high as or higher than
+   the foragers on λ_off and ρ. Nothing in the grade measures how much there is to model. A capacity or size term
+   is needed (Plan 2, rate–distortion). Until then, "degree of self" is not defined by the grade vector.
+2. **A wrong self-model is barely used off-state.** The fixed-belief forager has λ_off = 0.012, ten times lower
+   than the learned one (0.123), although λ is the same (0.156). Its planner mostly ignores what its wrong
+   self-model says about other states.
+3. **γ can hide strong steering.** Reactive forager: γ is only 0.17 bits, but setting R to another value changes
+   the action in 71% of cases (γ_do = 0.71; a fraction, not bits, so the two numbers are not directly comparable).
+   Caveat: the interventions
+   include states that never occur on the agent's trajectories (for example mode = rest with low energy).
+   A version that weights interventions towards reachable states is still to do.
+4. **λ changed slightly for the low-capacity agent** (0.156 in v1, 0.189 in v2), because v2 keys the scramble
+   table on what the decoder actually reads.

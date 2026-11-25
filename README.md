@@ -12,8 +12,11 @@ Part of the project **"I"**: review the literature on consciousness, build thoug
 | [`HANDOFF.md`](HANDOFF.md) | Short brief for the next person or agent who continues this work |
 | `code/sim_v0.py` | Simulation for formalism v0 |
 | `code/sim_v1.py` | Simulation for formalism v1 (internal reader, intrinsic split, self-fitting fixed point) |
+| `code/sim_v2.py` | v2 step 1: interventional γ_do (D3) and off-state reading λ_off (D8′), plus adversarial agents |
 | `tests/test_results.py` | Regression checks for the main results |
-| `results/` | Saved outputs of both simulations |
+| `tests/PREDICTIONS_v2.md` | v2 predictions (committed before the v2 code) and their outcome |
+| `tests/test_adversarial_v2.py` | Adversarial checks P1–P8 |
+| `results/` | Saved outputs of the simulations |
 
 ## Quick start
 
@@ -22,7 +25,9 @@ Python 3.8 or later, no dependencies.
 ```bash
 python3 code/sim_v0.py
 python3 code/sim_v1.py
+python3 code/sim_v2.py
 python3 tests/test_results.py
+python3 tests/test_adversarial_v2.py
 ```
 
 ## One-paragraph summary
