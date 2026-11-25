@@ -1,6 +1,6 @@
 # A Minimal Formal Theory of the Hofstadter Self
 
-**Report on work so far — version 1, 23 November 2026**
+**Report on work so far — version 2, 25 November 2026** (version 1: 23 November 2026)
 Project: **"I"** — review the literature on consciousness, build thought experiments that narrow down what it is, and answer the question *"Is AI conscious?"*
 
 ---
@@ -29,12 +29,16 @@ Diagrams use Mermaid. GitHub and most Markdown viewers draw them automatically.
 9. Critique of v0: three serious problems
 10. Formalism v1: fixing the observer problems
 11. Simulation v1
-12. The current definition of a strange loop
-13. What we have deduced (list of results)
-14. Limits and open questions
-15. Next steps
-16. Glossary
-17. References
+12. The definition of a strange loop (v1)
+13. Critique of v1: nine holes
+14. Formalism v2 (step 1)
+15. Simulation v2
+16. The current definition of a strange loop (v2)
+17. What we have deduced (list of results)
+18. Limits and open questions
+19. Next steps
+20. Glossary
+21. References
 Appendix A. The code
 Appendix B. Raw outputs
 
@@ -44,15 +48,16 @@ Appendix B. Raw outputs
 
 We started from Douglas Hofstadter's idea that the "I" is a *strange loop*: a pattern in a system that models itself, and that this self could in principle be written down as one (very large) number. We set out to make this idea exact enough to test.
 
-We built a minimal formal theory in three steps, with a test at each step:
+We built a minimal formal theory in four steps, with a test at each step:
 
 1. **Formalism v0.** A finite agent with a world part and a self part. We proved two simple results. An agent *can* use its own full rulebook (from Kleene's recursion theorem). An agent *cannot* hold an exact copy of its own current state inside a part of itself (a counting argument). So a self-model of the current state must be **lossy**. This turns one of Hofstadter's claims into a theorem.
 2. **Simulation v0.** We measured five toy agents. The measures showed that the first definitions accept trivial cases (a thermostat with one memory bit passes). We added a **richness** measure ρ, which asks whether the self-model predicts how the agent would act in *other* situations. This excludes the thermostat.
 3. **Formalism and simulation v1.** We found that v0 depended on the observer in two ways: the observer supplied the decoder of the self-model, and the observer chose which variables count as "self". We fixed both. The self-model must now be **read by the agent itself** (tested by intervention), and the **"self" variables are found from the dynamics**, not chosen. We also showed that a self-model that the agent fits to its own behaviour reaches a **fixed point** quickly.
+4. **Critique of v1 and formalism v2 (step 1).** We attacked v1 and found nine holes. The most serious: v1 did not remove the observer; it moved the observer's choices into how the code is written. A thermostat, only rewritten, passed every v1 check. We fixed three holes and partly fixed a fourth. Causal use is now tested by **intervention** (γ_do). The self-model must be used **as a model**: its answers about *other* states must change what the agent does (D8′, λ_off). A new result, **Proposition 2′**, shows that an agent that answers "what would I do?" by running its own full decision procedure never halts if its questions can loop; it needs a separate, simpler self-model. We wrote our predictions down **before** the code. They held, with one surprise: our scores do not measure the *size* of a self. One v1 result (R15) was withdrawn. The dependence on how the agent is described (encoding) is still open.
 
 The theory describes the **structure** of a self. It does **not** explain why that structure would feel like anything. We keep that claim separate, as an explicit bridge axiom (A0) that can be tested or rejected on its own.
 
-> **In plain words:** We tried to turn "the self is a loop in which a system models itself" into mathematics. We found that a system can know its own rules exactly, but it can only ever have a simplified sketch of its own current state. We wrote small computer programs to test our definitions. The tests showed where the definitions were too generous (a thermostat counted as having a self) and where they secretly depended on us, the observers. We fixed those problems. We did not solve the question of why a self would *feel* like something. We wrote that down as a separate assumption that others can test.
+> **In plain words:** We tried to turn "the self is a loop in which a system models itself" into mathematics. We found that a system can know its own rules exactly, but it can only ever have a simplified sketch of its own current state. We wrote small computer programs to test our definitions. The tests showed where the definitions were too generous (a thermostat counted as having a self) and where they secretly depended on us, the observers. We fixed those problems. Then we attacked our own fixes, found that the theory still depended on how we *wrote* the machines, and made the tests stricter: a machine must actually plan by asking "what would I do if…?". We did not solve the question of why a self would *feel* like something. We wrote that down as a separate assumption that others can test.
 
 ---
 
@@ -88,7 +93,7 @@ Our aim was **not** to defend Hofstadter. It was to make his idea exact enough t
 
 ## 3. Literature that shaped the work
 
-This section lists the ideas we used and how each one shaped the theory. Section 17 gives full references.
+This section lists the ideas we used and how each one shaped the theory. Section 21 gives full references.
 
 ### 3.1 Self-reference in logic
 
@@ -169,6 +174,22 @@ The general idea "the self is a self-referential loop or fixed point" is **not n
 3. The **internal-reader** test λ (intervention on the agent's own decoder).
 4. The **intrinsic split** D9 of variables into sensory, self and parameter.
 5. A **working test harness** that computes all measures on concrete agents, and shows where each definition fails.
+6. The **off-state reader test** D8′ (λ_off): scramble only the self-model's answers about other states.
+7. **Proposition 2′**: bounded self-simulation needs a base self-model separate from the agent's own decision procedure.
+8. A **pre-registered adversarial test suite**: predictions committed before the code.
+
+### 3.7 Related work found after v1 (not yet read in full)
+
+The critique of v1 (§13, hole 9) found work that is close to ours. We cite it from memory; the details are not yet checked.
+
+| Work | What it does | Relation to this work |
+|---|---|---|
+| Butlin, Long et al. (2023) | Derives "indicator properties" for consciousness in AI from the main scientific theories | A checklist approach to the project's question; our measures could become one indicator |
+| Wilterson & Graziano (2021) | An RL agent that controls its attention with a simplified model of its own attention | Very close to our self-simulating forager: a lossy self-model that is read and steers |
+| Binder et al. (2024) | LLMs predict their own behaviour in hypothetical situations better than other models can | An LLM version of ε_cf and ρ |
+| Lindsey (2025) | Injects concepts into an LLM's activations and tests whether it notices | An LLM version of an intervention test like λ |
+| Hoel et al. (2013); Rosas et al. (2020) | Causal emergence; information measures of downward causation | Candidate tools for hole 2 (finding the "I" as a level) |
+| Putnam (1988) | Every open physical system implements every finite automaton, under some mapping | The deep form of hole 2 |
 
 > **In plain words:** Other people have had the idea that the self is a loop. The closest is Szangolies, who uses the trick from self-copying machines. What we add is a set of exact measures, a proof that a self can only be a *simplified* sketch of the system, and a computer test bench that shows which definitions work and which do not.
 
@@ -188,7 +209,11 @@ flowchart TD
     S0 -->|"γ fails; add richness ρ (D7)"| C["Critique of v0"]
     C -->|"observer supplies decoder;<br/>observer chooses split"| F1["Formalism v1<br/>D8 internal reader, D9 intrinsic split,<br/>D5 as self-fitting fixed point"]
     F1 --> S1["Simulation v1"]
-    S1 --> N["Next: learned agents under a capacity limit (7.2)"]
+    S1 -->|"rewritten thermostat passes;<br/>split depends on encoding; γ only correlational"| C1["Critique of v1: nine holes"]
+    C1 --> PR["Predictions written down first"]
+    PR --> F2["Formalism v2 step 1<br/>D3′ γ_do, D8′ λ_off, Prop 2′"]
+    F2 --> S2["Simulation v2 + adversarial suite"]
+    S2 --> N["Next: live self-fitting under a capacity limit;<br/>coarse-graining for the encoding problem"]
 ```
 
 Three working rules guided all choices.
@@ -295,7 +320,7 @@ flowchart LR
 
 **A0 (to be tested, not assumed).** M is conscious if and only if M has a stable strange loop, with a degree of consciousness that increases as ε falls and γ rises.
 
-The definitions do not depend on A0. Everything in sections 5–13 holds whether A0 is true or false.
+The definitions do not depend on A0. Everything in sections 5–17 holds whether A0 is true or false.
 
 > **In plain words:** The definitions tell us whether a machine has a certain *structure*. Whether that structure *is* consciousness is a separate bet. We wrote the bet down on its own, so that people can argue about the bet without arguing about the mathematics.
 
@@ -540,7 +565,7 @@ The fixed-point iteration converged in **2 iterations** in both learned cases (3
 
 ---
 
-## 12. The current definition of a strange loop
+## 12. The definition of a strange loop (v1)
 
 **Definition (strange loop, v1).** Let M be a finite agent with state variables X. Let W and R be fixed by D9. M has a **strange loop** if:
 
@@ -570,82 +595,281 @@ flowchart TD
     RI -- yes --> OK["STRANGE LOOP<br/>(learned self-simulating forager)"]
 ```
 
-Note: the low-capacity learned agent reads its self-model and is rich, but fails D3 in practice (γ ≈ 0.002).
+Note: the low-capacity learned agent reads its self-model and is rich, but fails D3 in practice (γ ≈ 0.002). *v2 withdraws this: by intervention its self part does steer (γ_do = 0.061; §15).*
 
 > **In plain words:** To have a strange loop, a machine must pass five checks: (1) its "I" changes what it does; (2) what it does changes its "I"; (3) it actually consults its "I"; (4) its "I" has settled into a stable, self-confirming picture; (5) that picture is rich — it knows how the machine would act in different situations. The thermostat fails at check 3. The best robot in our tests passes all five.
 
 ---
 
-## 13. What we have deduced
+## 13. Critique of v1: nine holes
 
-The table lists each result. The box below gives the main points in plain words. "Proved" means a mathematical proof. "Shown" means shown in the simulations, for the agents we built.
+After v1 we attacked our own definitions. We looked for three things: agents that pass but should not, choices that the observer still makes, and claims that are stronger than their proofs. We found nine holes. We checked the three strongest by running the v1 code on new agents. Two of these probes are now agents P1 and P8 in `code/sim_v2.py`; the third became the measure γ_do.
+
+| # | Hole | Kind | Evidence | Status in v2 |
+|---|---|---|---|---|
+| 1 | **D8 passes a rewritten thermostat.** If `act()` calls a function named "decoder", and that function *is* the policy, the one-bit thermostat gets λ = 0.46, ε = ε_cf = 0, ρ = 1, and a trivial fixed point. It passes every v1 check with top scores. | definition | shown | **fixed** (D8′, §14.2) |
+| 2 | **D9 depends on the encoding.** Store mode and food direction in one variable, and food direction becomes "self". Behaviour is the same. Which function counts as "the decoder" is also a choice of description. This is the implementation problem (Putnam, 1988). | definition | shown | **open** |
+| 3 | **γ is observational.** D3 is a causal claim, but γ = I(R; A \| W) is a correlation on the agent's own trajectories. The low-capacity agent has γ = 0.002, but setting its mode to another value changes the action in 7.6% of states (probe; over all values of R, γ_do = 0.061, §15). | definition | shown | **fixed** (D3′, §14.1) |
+| 4 | **The fixed point is true by construction.** The table is fitted to an exact copy of the policy, over all states, including unreachable ones. The decoder hardly changes behaviour (R13), so convergence is easy. No result on existence or uniqueness. | method | argued | open |
+| 5 | **Proposition 2 is weaker than claimed.** It needs full reachability, and it treats "part" as a subset of the variables. The policy already sees the whole state. The real reason for a lossy self-model is cost, not counting. | thesis | argued | **partly fixed** (Prop 2′, §14.3) |
+| 6 | **Weak tests.** The tests only check that the numbers stay the same. The definitions were tuned and tested on the same five agents. | method | argued | **fixed** (pre-registered adversarial suite, §14.4) |
+| 7 | **A0 cannot be tested.** There is no independent measure of consciousness. The grade is a vector, so "degree increases" is not an order. Plan 4 uses reports, which are behaviour. | thesis | argued | open (plan in §19) |
+| 8 | **The method does not reach LLMs.** D9 needs separate named variables. In a neural network, one context and each hidden unit mix input and own output. | scope | argued | open |
+| 9 | **Literature gaps.** Close work on AI consciousness indicators, attention schemas in agents, and LLM introspection was missing. | literature | — | partly (§3.7) |
+
+> **In plain words:** v1 did not really remove the observer. It moved the observer's choices into the way the code is written. In v1 we stopped choosing which drawer is the "I" drawer, but we still chose how to cut the furniture into drawers, and which function to call "the self-model". A thermostat written in a slightly different way passed every test. We fixed what we could fix quickly (holes 1, 3, 5 and 6) and kept the rest as open problems.
+
+---
+
+## 14. Formalism v2 (step 1): fixing holes 1, 3, 5 and 6
+
+### 14.1 D3′ — causal use by intervention (fix for hole 3)
+
+Let R be the self variables found by D9, and let s be a state on the agent's own trajectories. Set R to each other value r′ of its domain, keep everything else, and compare the actions:
+
+  **γ_do = E_{s ∼ trajectories} E_{r′ ≠ r(s)} 1[ π(s with R := r′) ≠ π(s) ]**,
+
+with r′ uniform over the other values of R. **D3′: γ_do > 0.** γ_do is a fraction of interventions, not a number of bits, so it cannot be compared directly with γ. A graded, information-theoretic version is the *information flow* of Ay and Polani (2008); we use the simplest form first.
+
+*Caveat.* Some interventions create states that never occur on the agent's trajectories (for example mode = rest with low energy). A version that weights interventions towards reachable states is still to do.
+
+> **In plain words:** To find out whether a steering wheel steers the car, you turn it and watch the car. You do not only watch how often the wheel and the car point the same way. v1 did the second thing. v2 does the first.
+
+### 14.2 D8′ — the self-model is used as a model (fix for hole 1)
+
+The policy calls its own decoder D on some queries q (for example "what will I do in the next state?"). Write key(q) for the part of q that D reads. A query is **off-state** if key(q) ≠ key(s), where s is the current state.
+
+- **φ** = the share of decoder calls that are off-state.
+- **λ_off** = E_{s ∼ trajectories} E_{D′} 1[ π_{D ⊕ D′}(s) ≠ π_D(s) ], where D ⊕ D′ answers with a scrambled table D′ for off-state queries and with the real D for the current state.
+
+**D8′: λ_off > 0.** The agent's behaviour depends on what its self-model says about states *other than the current one*. The self-model is used as a model, not as the policy.
+
+φ > 0 is not enough: an agent can ask about another state and ignore the answer (agent P2 in §15). λ_off catches this.
+
+```mermaid
+flowchart LR
+    S["current state s"] --> P["policy π"]
+    P -- "query: 'what do I do now?'<br/>key(q) = key(s)" --> D["real self-model D"]
+    P -- "query: 'what would I do in s′?'<br/>key(q) ≠ key(s)" --> X["scrambled D′<br/>(only in the λ_off test)"]
+    D --> P
+    X --> P
+    P --> A["action: changed?<br/>→ λ_off"]
+```
+
+> **In plain words:** In v1 we swapped the robot's self-picture for nonsense and watched whether its behaviour changed. But if the "self-picture" is just the robot's own rulebook, swapping it changes everything, and the test means nothing. Now we swap only the answers to "what *would* I do in another situation?", and keep the answer about now. A machine that only asks "what do I do now?" (it simply acts) is not affected. A machine that plans by asking itself about other situations is affected. That second machine uses a *model* of itself.
+
+### 14.3 Proposition 2′ — bounded self-simulation (partial fix for hole 5)
+
+Let P be a program that computes π. On input s, P queries a self-model D at a finite set Q(s) of states, and does a finite amount of other work. The **query graph** G_Q has an edge s → s′ for each s′ ∈ Q(s).
+
+**Proposition 2′ (bounded self-simulation).** Suppose D is computed by running P itself. Then P halts on every input if and only if G_Q has no cycle reachable from any state. In particular, if a chain of off-state queries can return to a state already on the chain, the agent must answer some queries with a **base self-model D₀ that is not computed by P**.
+
+*Proof.* Computing P(s) requires P(s′) for each s′ ∈ Q(s). So the call tree of P(s) is the unfolding of G_Q from s. We assume that P makes every query in Q(s). Each node has finitely many children. If no cycle is reachable from s, every path is finite (S is finite) and, by König's lemma, the tree is finite, so P halts. If a cycle is reachable, the unfolding has an infinite path, and P does not halt. ∎
+
+**Corollary 2′ (a cheap base model is lossy for most policies).** If D₀ is stored in b bits, it can represent at most 2^b of the |A|^|S| possible policies on S. So if b < |S| · log₂|A|, most policies cannot be modelled exactly by D₀. ∎
+
+**Meaning.** An agent that plans by asking itself "what would I do then?", in a world where situations can repeat, cannot answer by running its full self again. The regress must stop at a separate, simpler self-model. That model can be exact only if the agent can afford to store its whole rulebook (Proposition 1 allows this; the learned table in §11 does it). If storage is limited, the self-model must be a simplification. This gives Hofstadter's "the I is a simplified symbol" a better reason than Proposition 2: the reason is **cost and regress**, not only counting.
+
+**What Proposition 2′ does not show.** It does not show that the base model must be *inaccurate* for a given agent; Corollary 2′ is a statement about most policies, not about every one. The full claim needs the rate–distortion result of Plan 2.
+
+> **In plain words:** Hold two mirrors face to face and you get an endless corridor of reflections. An agent that asks "what would I do next?" by running its *whole* self again gets the same endless corridor, and never acts. Real agents must stop the corridor somewhere, with a smaller picture of themselves. If that picture must also be cheap to store, it cannot be perfect for most possible agents. So the "I" is a sketch because a full self-simulation would never end and a full record would cost too much, not only because a part is smaller than the whole.
+
+### 14.4 Method: predictions written before the code (fix for hole 6)
+
+For v2 we wrote the predictions down and committed them (`tests/PREDICTIONS_v2.md`) **before** the v2 code existed. Git history shows the order. P1 and P7 were partly known from the probes of §13. Each prediction became an automatic test (`tests/test_adversarial_v2.py`).
+
+| # | Agent | Prediction |
+|---|---|---|
+| P1 | Thermostat + bit, rewritten so that `act` = `decoder` | fails D8′ |
+| P2 | As P1, plus a decoder call about another state, result ignored | φ > 0 but fails D8′ |
+| P3 | Forager with a decorative decoder (called, output ignored) | fails D8 and D8′ |
+| P4 | Lookup-table copy of the self-simulating forager | same behaviour in all 72 states; fails D8 |
+| P5 | Self-simulating foragers (fixed belief, learned, low capacity) | pass D8′ |
+| P6 | Thermostat with a one-step look-ahead on itself | passes D8′, with a low grade |
+| P7 | All agents with a self part | γ_do > 0; R15 does not survive |
+| P8 | Reactive forager, state re-encoded | D9 split changes (hole 2, known open) |
+
+> **In plain words:** Before, we wrote a definition, then built test machines, and could (without meaning to) choose machines that made the definition look good. Now we first write down what each machine *should* score, save it, and only then run the code. If the result surprises us, we must say so.
+
+---
+
+## 15. Simulation v2
+
+Code: `code/sim_v2.py` (imports `sim_v1.py`, which is not changed). Output: `results/sim_v2_output.md`. Tests: `tests/test_adversarial_v2.py`. Same worlds, 200 episodes × 200 steps, seed 0. γ_do, φ, λ and λ_off use every 7th logged state (up to 4000) and 20 scrambles. In v2, the scramble table is keyed on what the decoder actually reads.
+
+**New agents.** P1, P2 and P6 are thermostats; P3, P4 and P8 are foragers in the ring world (see the table in §14.4). The look-ahead thermostat (P6) uses a crude model in which "on" moves the temperature up one bin and "off" moves it down one bin. For each action, it asks its own self-model what it will do in the predicted next state, and scores 1 for each predicted step in the "ok" bin (the second step weighted 0.8).
+
+### 15.1 Results
+
+| Agent | γ (bits) | γ_do | λ | φ | λ_off | ε | ρ | D3′ | D8 | D8′ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Thermostat + bit | 0.71 | 0.71 | – | – | – | – | – | yes | no | no |
+| P1 Thermostat, rewritten | 0.71 | 0.71 | 0.46 | 0.00 | **0.00** | 0.00 | 1.00 | yes | yes | **no** |
+| P2 Thermostat, gamed | 0.71 | 0.71 | 0.46 | 0.50 | **0.00** | 0.00 | 1.00 | yes | yes | **no** |
+| P6 Thermostat, self-look-ahead | 0.71 | 0.71 | 0.36 | 0.59 | 0.16 | 0.00 | 1.00 | yes | yes | yes |
+| Reactive forager (v0) | 0.17 | 0.71 | – | – | – | – | – | yes | no | no |
+| P3 Forager, decorative decoder | 0.17 | 0.71 | 0.00 | 0.40 | 0.00 | 0.00 | 0.55 | yes | no | no |
+| P4 Lookup-table copy | 0.15 | 0.09 | – | – | – | – | – | yes | no | no |
+| P5 Self-sim, fixed belief | 0.15 | 0.09 | 0.16 | 0.40 | 0.012 | 0.28 | −0.08 | yes | yes | yes |
+| P5 Learned self-model | 0.15 | 0.09 | 0.16 | 0.40 | 0.12 | 0.00 | 1.00 | yes | yes | yes |
+| P5 Learned, low capacity | **0.002** | **0.061** | 0.19 | 0.24 | 0.15 | 0.33 | 0.86 | yes | yes | yes |
+| P8 Reactive forager, re-encoded | 0.74 | 0.74 | – | – | – | – | – | yes | no | no |
+
+D9 split: W = {temp}, R = {bit} for the thermostats; W = {fd, eb}, R = {mode, heading} for the foragers, except P8: W = {eb}, R = {x, heading}. P4 and the self-simulating forager choose the same action in 72/72 states.
+
+### 15.2 Predictions against outcome
+
+All eight predictions hold, except the "low grade" part of P6.
+
+### 15.3 Findings
+
+1. **D8′ separates the cases that D8 confused.** The rewritten thermostat (P1) and the gamed thermostat (P2) fail. The decorative decoder (P3) fails. All self-simulating foragers (P5) pass.
+2. **R15 is withdrawn.** The low-capacity agent has γ = 0.002 bits, but γ_do = 0.061: its self part does steer its behaviour. v1's γ was low because, on its trajectories, the mode is almost a function of the food direction.
+3. **The grade does not see size (not predicted).** The look-ahead thermostat (P6) has λ_off = 0.16, higher than every forager, and ρ = 1. Nothing in the grade measures how much there is to model. A capacity or size term is needed (Plan 2). Until then, the grade vector does not define a "degree of self".
+4. **A wrong self-model is barely used off-state (not predicted).** The fixed-belief forager has λ_off = 0.012, ten times lower than the learned one (0.12), although λ is the same. Its planner mostly ignores what its wrong self-model says about other states.
+5. **γ can hide strong steering.** For the reactive forager, γ is only 0.17 bits, but setting R changes the action in 71% of cases (see the caveat in §14.1).
+6. **Same behaviour, different verdict (P4).** The lookup-table copy has exactly the same behaviour as the self-simulating forager, but fails D8, because nothing inside it reads a self-model. The theory is about implementation, not only behaviour. Whether this is right is an open decision (§18).
+7. **Encoding dependence remains (P8).** Re-encoding changes the D9 split. Hole 2 is still open.
+8. λ for the low-capacity agent is 0.19 in v2 and 0.16 in v1, because v2 keys the scramble table on what the decoder reads.
+
+> **In plain words:**
+> - The new "swap only the what-if answers" test throws out the rewritten thermostat and the fakes, and keeps the robots that really plan with their self-picture.
+> - One v1 result was wrong: the small robot's "I" does steer it. The old measure could not see this.
+> - A thermostat that thinks one step ahead about itself passes, and it scores as high as the foragers. Our scores measure *whether* there is a loop, not *how big* the self is. That is the next problem.
+> - A robot with a wrong self-picture learns, in effect, not to listen to it much.
+> - A lookup table that behaves exactly like the planning robot does not pass, because nothing inside it consults a self-picture. Is that right? Hofstadter says the self is a pattern. We must decide which pattern: the pattern of behaviour, or the pattern inside.
+
+---
+
+## 16. The current definition of a strange loop (v2)
+
+**Definition (strange loop, v2).** Let M be a finite agent with state variables X. Let W and R be fixed by D9. M has a **strange loop** if:
+
+| Condition | Name | Measure | Requirement | Changed in v2 |
+|---|---|---|---|---|
+| D3′ | the self part steers behaviour | γ_do (intervention on R) | γ_do > 0 | yes (was γ) |
+| D4 | the self part is updated by own actions | exhaustive test on U | true | — |
+| D8′ | the agent uses its self-model *as a model* | λ_off (scramble off-state answers only) | λ_off > 0 | yes (was λ) |
+| D5 | the self-model is a fixed point of self-fitting | T* = F(T*) | reached | — (hole 4 open) |
+| D7 | the self-model is rich | ρ = 1 − ε_cf / ε_cf⁰ | ρ ≥ ρ₀ > 0 | — |
+
+The **grade** of the loop is the vector (γ_do, λ, φ, λ_off, ε, ε_cf, ρ, κ, N_eff). It has **no size term yet** (finding 3), so it does not yet order loops by "how much self".
+
+By Proposition 2′, any agent that passes D8′ by self-simulation in a world where its look-ahead can return to a state already on the chain contains a base self-model that is separate from its own decision procedure.
+
+```mermaid
+flowchart TD
+    A["Agent"] --> D9["D9: find W and R from the dynamics<br/>(still depends on the encoding: hole 2)"]
+    D9 --> G{"D3′: does setting R<br/>change the action? γ_do > 0"}
+    G -- no --> X1["no strange loop<br/>(thermostat, lookup table)"]
+    G -- yes --> L{"D4: is R updated<br/>by own actions?"}
+    L -- no --> X2["no strange loop"]
+    L -- yes --> RD{"D8′: do its self-model's answers<br/>about OTHER states change what it does?<br/>λ_off > 0"}
+    RD -- no --> X3["no strange loop<br/>(thermostat + bit, rewritten / gamed thermostat,<br/>decorative decoder, lookup-table copy)"]
+    RD -- yes --> FP{"D5: fixed point of<br/>self-fitting reached?"}
+    FP -- no --> X4["unstable self"]
+    FP -- yes --> RI{"D7: rich?<br/>ρ ≥ ρ₀"}
+    RI -- no --> X5["deluded or empty self<br/>(fixed-belief forager, ρ < 0)"]
+    RI -- yes --> OK["STRANGE LOOP<br/>(learned self-simulating foragers;<br/>also the look-ahead thermostat: no size term yet)"]
+```
+
+> **In plain words:** The five checks are the same as in v1, but two are now stricter. Check 1 now *turns the wheel* instead of watching it. Check 3 now asks whether the machine plans with its self-picture ("what would I do if…?"), not only whether it calls a function with that name. A very small machine can still pass if it really does plan with a picture of itself. That is allowed: Hofstadter says selves come in degrees. But our scores cannot yet say *how small* it is.
+
+---
+
+## 17. What we have deduced
+
+The table lists each result. "Proved" means a mathematical proof. "Shown" means shown in the simulations, for the agents we built. "Argued" means an argument without a proof or a simulation.
 
 | # | Result | Status |
 |---|---|---|
 | R1 | An agent can use its own full code ⌜M⌝ exactly (Prop 1, from Kleene). | Proved (known result) |
-| R2 | A part of an agent cannot hold an exact record of the agent's full current state, unless the rest of the state is redundant (Prop 2 and corollary). Any self-model of the current state is lossy. | Proved |
+| R2 | A part of an agent cannot hold an exact record of the agent's full current state, unless the rest of the state is redundant (Prop 2 and corollary). | Proved (but see hole 5: weaker than first claimed) |
 | R3 | The minimal definitions D1–D6 accept trivial loops (thermostat + 1 bit). | Shown |
 | R4 | Causal use γ alone cannot separate rich from trivial selves; the trivial bit has the highest γ. | Shown |
-| R5 | Counterfactual richness ρ separates them (bit ρ = 0; foragers ρ = 0.55–0.71). | Shown |
+| R5 | Counterfactual richness ρ separates them (bit ρ = 0; foragers ρ = 0.55–0.71). | Shown (with the observer's decoder, v0) |
 | R6 | On-trajectory accuracy ε can be perfect while the self-model is wrong in other situations (ε = 0, ε_cf = 0.15). | Shown |
 | R7 | N_eff detects a system with several fixed personas (N_eff = 2). | Shown |
 | R8 | v0 depended on the observer twice: the decoder and the split. | Argued |
-| R9 | The intrinsic split D9 recovers the intended W and R from the dynamics, and agrees with the variables the agent's own decoder reads. | Shown |
+| R9 | The intrinsic split D9 recovers the intended W and R from the dynamics, and agrees with the variables the agent's own decoder reads. | Shown (but see R17) |
 | R10 | The internal-reader test D8 excludes agents that have a self variable but never consult a self-model. | Shown |
 | R11 | An agent can read a self-model that is wrong ("deluded self": λ > 0, ρ < 0). | Shown |
-| R12 | Self-fitting reaches a fixed point quickly (2 iterations) and gives an exact model of the agent's rules. | Shown |
+| R12 | Self-fitting reaches a fixed point quickly (2 iterations) and gives an exact model of the agent's rules. | Shown (but see hole 4) |
 | R13 | Learning can make a self-model true without changing behaviour (72/72 states unchanged). | Shown |
 | R14 | A self-model has two parts: a model of the rules (can be exact, R1) and a pointer to the current state (must be lossy, R2). | Argued from R1, R2, R12 |
-| R15 | Reading a self-model (D8) and being steered by the self state (D3) are independent conditions. | Shown |
+| ~~R15~~ | ~~Reading a self-model (D8) and being steered by the self state (D3) are independent conditions.~~ | **Withdrawn in v2** (R18) |
+| R16 | D8 (v1) passes a thermostat that is only rewritten so that its policy is called "decoder" (λ = 0.46, ρ = 1). | Shown |
+| R17 | D9 is not invariant under re-encoding of the state. | Shown (open) |
+| R18 | Observational γ can hide steering: γ = 0.002 bits but γ_do = 0.061 for the same agent. | Shown |
+| R19 | D8′ excludes the rewritten, gamed and decorative agents (P1–P3) and keeps the self-simulating ones (P5, P6), as predicted before the code was written. | Shown |
+| R20 | Self-simulation by running one's own decision procedure halts only if the query graph has no cycle; otherwise a separate base self-model is needed (Prop 2′). | Proved |
+| R21 | A base self-model stored in fewer than \|S\| · log₂\|A\| bits cannot be exact for most policies (Cor 2′). | Proved (counting) |
+| R22 | The grade vector does not register size: a thermostat with a one-step self-look-ahead scores as high as the foragers. | Shown |
+| R23 | A wrong self-model is used much less off-state than a correct one (λ_off 0.012 against 0.12). | Shown (one pair of agents) |
+| R24 | Two agents with identical behaviour can get different verdicts (the lookup-table copy fails D8). The theory depends on implementation. | Shown |
 
-> **In plain words — the five most important points:**
+> **In plain words — the five most important points (v1):**
 > 1. A system can know its own rules perfectly, but its picture of its own current state is always a simplification. A "self" is therefore always a kind of sketch or caricature, never a photograph.
 > 2. "My self-note changes what I do" is not enough to count as a self: a thermostat can do that.
 > 3. What matters is whether the self-picture knows how you *would* act in other situations, and whether you actually *consult* it.
 > 4. A self-picture can be consulted and still be wrong. It can also be made right without changing behaviour.
 > 5. The theory can now be applied without the observer choosing what counts as the self — except for where the system's boundary is.
+>
+> **What v2 changed:**
+> 1. Point 5 was too optimistic. The observer still chooses how the machine is described, and the answer changes with that choice.
+> 2. "Consult" must mean "plan with": the machine must ask its self-picture about situations other than now, and act on the answer. Calling a function named "self-model" is not enough.
+> 3. There is now a second, better reason why a self must be a sketch: a machine that answered "what would I do?" by running its whole self again would never stop.
+> 4. Our scores say *whether* a machine has a self-loop, not *how big* that self is. A very small machine with a genuine loop scores high.
 
 ---
 
-## 14. Limits and open questions
+## 18. Limits and open questions
 
 **Limits of the formalism**
 - **The hard problem is untouched.** All definitions are structural. A0 is a bet, not a result.
-- **The sensor boundary is given.** D9 removes the choice of R, not the choice of where the agent ends and the world begins.
-- **Thresholds are arbitrary**: δ (accuracy), ρ₀ (richness), the distribution μ over situations (uniform here), the scramble distribution for λ.
-- **ρ still needs an independent justification.** It was introduced because it excludes the thermostat (Problem 3 in section 9).
-- **Finite, discrete agents only.** Continuous systems (brains, neural networks) need measure-theoretic versions of every definition.
+- **The description is still given (hole 2).** D9 depends on how the state is encoded, and D8′ depends on which function counts as the decoder. The sensor boundary is also given.
+- **The grade has no size term** (R22), so "degree of self" is not yet defined.
+- **The fixed point is still fitted from an exact copy of the policy** (hole 4).
+- **γ_do includes interventions to states that never occur** on the agent's trajectories.
+- **Thresholds are arbitrary**: δ (accuracy), ρ₀ (richness), the distribution μ over situations (uniform), the scramble distribution for λ and λ_off.
+- **ρ still needs an independent justification** (Problem 3 in section 9).
+- **Finite, discrete agents only.** Continuous systems (brains, neural networks) need measure-theoretic versions, and a way to find the self variables inside them (hole 8).
 
 **Limits of the simulations**
-- The agents are small and partly hand-designed: the planner, the world model and the rewards are ours.
-- The learned self-model is a lookup table fitted to an exact copy of the agent's own policy. Real systems learn from noisy experience.
+- The agents are small and hand-designed: the planners, world models and rewards are ours.
+- The adversarial suite has eight cases. It is a start, not a proof of robustness.
 - The fitting rule weights all states equally (finding 8 in section 11.2).
 
+**Decision needed from the project owner**
+- **Behaviour or implementation?** The lookup-table copy (P4) behaves exactly like the self-simulating forager, but fails. Hofstadter says the self is a *pattern*. Is that the pattern of behaviour, or the pattern of the internal process? The theory currently says: the internal process.
+
 **Open questions from earlier sections, not yet addressed**
-- Unity beyond N_eff (one "I" versus many), and whether consciousness should be scored per trajectory or per system (Plan 3).
+- Unity beyond N_eff (one "I" versus many), and whether to score per trajectory or per system (Plan 3).
 - Proposition 3: why the optimal lossy self-model is a single agent (Plan 2).
-- Separating the self from experience (Plan 4).
+- Separating the self from experience (Plan 4; see the A0 split in §19).
 - The full comparison with Szangolies (Plan 5).
-- Surprising positives: a chess engine that simulates its own search might pass every check.
+- Surprising positives: a chess engine that simulates its own search would probably pass D8′.
 
 ---
 
-## 15. Next steps
+## 19. Next steps
+
+Done in v2: γ_do (D3′), D8′, Proposition 2′ and its corollary, and the pre-registered adversarial suite.
 
 In order of priority:
 
-1. **Learned agents under a capacity limit (Plan 2).** Train an agent that learns its policy and its self-model *together*, with an information bottleneck on R. Measure whether a single latent "agent" variable emerges. This tests Proposition 3 and gives an independent reason for ρ.
-2. **Weight the self-fitting by visit frequency** (fixes finding 8) and add noise to the agent's self-observation.
-3. **Derive the sensor boundary** (for example by searching for a Markov blanket in the joint dynamics).
-4. **Second-order self-model**: require D to predict the update U of its own self part, not only actions.
-5. **Unity experiments**: multi-persona agents with shared and separate self-models; decide the scoring unit.
-6. **Thought experiments for Plan 4** (self without experience, experience without self) for the project's thought-experiment catalogue.
-7. **Read the Szangolies preprint** and complete the comparison table.
-8. **Apply the measures to a real LLM agent** with persistent self-notes (for example the project owner's own agent in Rust).
+1. **Live self-fitting under a capacity limit (Plan 2; holes 4 and 5, and the size term of R22).** Fit the self-model while the agent acts, from its own past (state, action) pairs, weighted by visit frequency, with noise and a capacity limit. Start from many initial tables and count fixed points and cycles; a "self" is an attractor of self-fitting. Add a **loop gain** (how much behaviour changes when the self-model changes). Use the rate–distortion trade-off to give the grade a size term, and to test Proposition 3.
+2. **Weight γ_do towards reachable states.**
+3. **Coarse-graining instead of named variables (hole 2).** Describe the agent by its states and transitions only, and define the "I" as the coarse-graining R = f(S) that gives the strongest loop under the capacity limit. Re-encoding the state does not change the set of coarse-grainings. Related work: causal emergence (Hoel et al., 2013) and information-based measures of downward causation (Rosas et al., 2020). Invert test P8 when this works.
+4. **Split A0 (hole 7).** A0-weak (testable): a system *reports* a self or an experience only if it has a strange loop — the meta-problem (Chalmers, 2018). A0-strong (identity): kept as an open bet. Also split the loop into a **minimal loop** (body and point of view) and a **narrative loop** (the story of "I"; Gallagher, 2000). Prediction: in ego dissolution the narrative loop collapses but the minimal loop stays, so experience stays. Check with a marker that does not depend on report, such as the perturbational complexity index (Casali et al., 2013).
+5. **Towards LLMs (hole 8).** Define a self variable in a network as a direction in activation space that cannot be decoded from the current input alone, is changed by the model's own outputs, and changes both self-prediction and behaviour when patched. First a small transformer in the ring world, then an LLM agent with persistent self-notes (where D9 applies directly), then a full LLM with introspection set-ups (Binder et al., 2024; Lindsey, 2025).
+6. **Second-order self-model**: require D to predict the update U of its own self part, not only actions.
+7. **Unity experiments**: multi-persona agents with shared and separate self-models; decide the scoring unit.
+8. **Read the Szangolies preprint** and the works in §3.7, and complete the comparisons.
 
 ---
 
-## 16. Glossary
+## 20. Glossary
 
 | Term | Meaning |
 |---|---|
@@ -667,30 +891,44 @@ In order of priority:
 | State | Everything the agent holds at one moment |
 | Strange loop | Hofstadter's term: a self-model that also steers the system it models |
 | World part W | The variables that form the agent's model of the world |
+| Coarse-graining | A simpler description that groups many detailed states into one ("level") |
+| Intervention | Setting a variable to a value from outside, to see what it causes |
+| Off-state query | A question to the self-model about a state that is not the current one ("what would I do if…?") |
+| Pre-registration | Writing predictions down, and saving them, before running the test |
+| Query graph | The graph of which states the agent asks its self-model about, from each state |
 
-Symbols: ε self-prediction error; ε_cf counterfactual error; ρ richness; κ compression; γ causal use; λ internal-reader score; N_eff effective number of selves.
+Symbols: ε self-prediction error; ε_cf counterfactual error; ρ richness; κ compression; γ causal use (observational, bits); γ_do causal use by intervention (fraction); λ internal-reader score; φ share of off-state queries; λ_off off-state reader score; N_eff effective number of selves.
 
 ---
 
-## 17. References
+## 21. References
 
+- Ay, N., & Polani, D. (2008). Information flows in causal networks. *Advances in Complex Systems*, 11(1), 17–41. (cited from memory, not checked)
 - Baars, B. J. (1988). *A Cognitive Theory of Consciousness*. Cambridge University Press.
+- Binder, F. J., et al. (2024). Looking inward: language models can learn about themselves by introspection. arXiv:2410.13787. (cited from memory, not checked)
 - Boolos, G. (1993). *The Logic of Provability*. Cambridge University Press.
+- Butlin, P., Long, R., et al. (2023). Consciousness in artificial intelligence: insights from the science of consciousness. arXiv:2308.08708. (cited from memory, not checked)
+- Casali, A. G., et al. (2013). A theoretically based index of consciousness independent of sensory processing and behavior. *Science Translational Medicine*, 5(198), 198ra105. (cited from memory, not checked)
 - Chalmers, D. J. (1995). Facing up to the problem of consciousness. *Journal of Consciousness Studies*, 2(3), 200–219.
 - Chalmers, D. J. (2018). The meta-problem of consciousness. *Journal of Consciousness Studies*, 25(9–10), 6–61.
 - Friston, K. (2010). The free-energy principle: a unified brain theory? *Nature Reviews Neuroscience*, 11, 127–138.
 - Friston, K. (2013). Life as we know it. *Journal of the Royal Society Interface*, 10, 20130475.
+- Gallagher, S. (2000). Philosophical conceptions of the self: implications for cognitive science. *Trends in Cognitive Sciences*, 4(1), 14–21. (cited from memory, not checked)
 - Gödel, K. (1931). Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I. *Monatshefte für Mathematik und Physik*, 38, 173–198.
 - Graziano, M. S. A. (2013). *Consciousness and the Social Brain*. Oxford University Press.
+- Hoel, E. P., Albantakis, L., & Tononi, G. (2013). Quantifying causal emergence shows that macro can beat micro. *PNAS*, 110(49), 19790–19795. (cited from memory, not checked)
 - Hofstadter, D. R. (1979). *Gödel, Escher, Bach: An Eternal Golden Braid*. Basic Books.
 - Hofstadter, D. R. (2007). *I Am a Strange Loop*. Basic Books.
 - Hofstadter, D. R. (2026). Is there an "I" in AI? *Philosophical Transactions of the Royal Society A*, 384(2320). doi:10.1098/rsta.2024.0527 (summarised in the project doc `claude/hofstadter-strange-loop-argument.md`).
 - Kim, C.-E. (2025). A recursive stability model of qualia: philosophical self-reference, neural attractor structures, and experimental exploration in LLMs. Poster P133, CNS 2025, Florence.
 - Kleene, S. C. (1938). On notation for ordinal numbers. *Journal of Symbolic Logic*, 3(4), 150–155.
 - Lawvere, F. W. (1969). Diagonal arguments and cartesian closed categories. *Lecture Notes in Mathematics*, 92, 134–145. Springer.
+- Lindsey, J. (2025). Emergent introspective awareness in large language models. *Transformer Circuits Thread*, Anthropic. (cited from memory, not checked)
 - Löb, M. H. (1955). Solution of a problem of Leon Henkin. *Journal of Symbolic Logic*, 20(2), 115–118.
 - Metzinger, T. (2003). *Being No One: The Self-Model Theory of Subjectivity*. MIT Press.
 - Oizumi, M., Albantakis, L., & Tononi, G. (2014). From the phenomenology to the mechanisms of consciousness: Integrated Information Theory 3.0. *PLoS Computational Biology*, 10(5), e1003588.
+- Putnam, H. (1988). *Representation and Reality*. MIT Press.
+- Rosas, F. E., Mediano, P. A. M., Jensen, H. J., Seth, A. K., Barrett, A. B., Carhart-Harris, R. L., & Bor, D. (2020). Reconciling emergences: an information-theoretic approach to identify causal emergence in multivariate data. *PLoS Computational Biology*, 16(12), e1008289. (cited from memory, not checked)
 - Rosenthal, D. M. (2005). *Consciousness and Mind*. Oxford University Press.
 - Shannon, C. E. (1959). Coding theorems for a discrete source with a fidelity criterion. *IRE National Convention Record*, 7(4), 142–163.
 - "Strange Loop Model" (2021). *Frontiers in Ecology and Evolution*, doi:10.3389/fevo.2021.802300 (title and authors not checked in this session).
@@ -700,6 +938,7 @@ Symbols: ε self-prediction error; ε_cf counterfactual error; ρ richness; κ c
 - Tishby, N., Pereira, F. C., & Bialek, W. (1999). The information bottleneck method. *Proc. 37th Allerton Conference*, 368–377.
 - Tononi, G. (2004). An information integration theory of consciousness. *BMC Neuroscience*, 5, 42.
 - von Neumann, J. (1966). *Theory of Self-Reproducing Automata* (A. W. Burks, Ed.). University of Illinois Press.
+- Wilterson, A. I., & Graziano, M. S. A. (2021). The attention schema theory in a neural network agent: controlling visuospatial attention using a descriptive model of attention. *PNAS*, 118(33), e2102421118. (cited from memory, not checked)
 - Yanofsky, N. S. (2003). A universal approach to self-referential paradoxes, incompleteness and fixed points. *Bulletin of Symbolic Logic*, 9(3), 362–386.
 
 ---
@@ -712,30 +951,38 @@ All code is plain Python 3 with no dependencies.
 |---|---|
 | `code/sim_v0.py` | Formalism v0: worlds, five agents, measures κ, γ, D3, D4, ε, ε_cf, ρ, N_eff |
 | `code/sim_v1.py` | Formalism v1: variable-based agents, D9 intrinsic split, D8 decoder intervention λ, self-simulating forager, D5 self-fitting fixed point |
-| `tests/test_results.py` | Checks that the main results (R4, R5, R7, R9–R12, R15) still hold |
+| `code/sim_v2.py` | Formalism v2 step 1: γ_do (D3′), φ and λ_off (D8′), adversarial agents P1–P8 (imports `sim_v1.py`) |
+| `tests/test_results.py` | Checks that the v0/v1 results (R4, R5, R7, R9–R12, and the v1 numbers behind R15) still hold |
+| `tests/PREDICTIONS_v2.md` | v2 predictions, committed before the v2 code, and their outcome |
+| `tests/test_adversarial_v2.py` | Checks predictions P1–P8 (about 15 s) |
 
 Run from the repository root:
 
 ```bash
 python3 code/sim_v0.py        # prints the table in section 8.4
 python3 code/sim_v1.py        # prints the tables in section 11.1
+python3 code/sim_v2.py        # prints the table in section 15.1
 python3 tests/test_results.py # prints "ok" for each check
+python3 tests/test_adversarial_v2.py
 ```
 
 ### Map from formalism to code
 
-| Formalism | `sim_v0.py` | `sim_v1.py` |
-|---|---|---|
-| Agent M = (S, π, u) | class `Agent` (`pi`, `U`) | class `Agent` (`sense`, `act`, `update`) |
-| Self-model / decoder | `Agent.dec` (supplied by observer) | `Agent.decoder`, used inside `act` (D8) |
-| γ = I(R; A \| W) | `cond_mi` | `cond_mi` |
-| D3, D4 | exhaustive loops in `evaluate` | — |
-| ε, ε_cf, ε_cf⁰, ρ (D7) | `evaluate` | `evaluate` (with the agent's own decoder) |
-| N_eff, attractors | `terminal_sccs`, `evaluate` | — |
-| D9 intrinsic split | — | `classify_variables` |
-| D8 λ | — | decoder scrambles in `evaluate` |
-| D5 self-fitting fixed point | — | `LearnedSelfSimForager.fit` |
+| Formalism | `sim_v0.py` | `sim_v1.py` | `sim_v2.py` |
+|---|---|---|---|
+| Agent M = (S, π, u) | class `Agent` (`pi`, `U`) | class `Agent` (`sense`, `act`, `update`) | from `sim_v1` |
+| Self-model / decoder | `Agent.dec` (supplied by observer) | `Agent.decoder`, used inside `act` (D8) | from `sim_v1` |
+| γ = I(R; A \| W) | `cond_mi` | `cond_mi` | from `sim_v1` |
+| D3, D4 | exhaustive loops in `evaluate` | — | — |
+| ε, ε_cf, ε_cf⁰, ρ (D7) | `evaluate` | `evaluate` (with the agent's own decoder) | from `sim_v1` |
+| N_eff, attractors | `terminal_sccs`, `evaluate` | — | from `sim_v1` |
+| D9 intrinsic split | — | `classify_variables` | from `sim_v1` |
+| D8 λ | — | decoder scrambles in `evaluate` | `reader_scores` (keyed on what the decoder reads) |
+| D5 self-fitting fixed point | — | `LearnedSelfSimForager.fit` | from `sim_v1` |
+| D3′ γ_do | — | — | `gamma_do` |
+| D8′ φ, λ_off | — | — | `reader_scores` |
+| Adversarial agents P1–P8 | — | — | `ThermoRewritten`, `ThermoGamed`, `ThermoLookahead`, `DecorativeForager`, `TableForager`, `ReencodedForager`; `runs` |
 
 ## Appendix B. Raw outputs
 
-The exact outputs of both scripts are stored in `results/sim_v0_output.md` and `results/sim_v1_output.md`. All numbers in sections 8 and 11 come from these files (seed 0).
+The exact outputs of the three scripts are stored in `results/sim_v0_output.md`, `results/sim_v1_output.md` and `results/sim_v2_output.md`. All numbers in sections 8, 11 and 15 come from these files (seed 0). Numbers in §13 come from the same agents, now in `sim_v2.py`.
