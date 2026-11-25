@@ -1,7 +1,31 @@
 """
-Adversarial checks for v2: the predictions P1-P8 in tests/PREDICTIONS_v2.md.
+Adversarial checks for v2 (REPORT.md, sections 14.4 and 15).
 Run from the repository root:  python3 tests/test_adversarial_v2.py   (or: pytest tests)
 Takes about 15 s (all agents are evaluated once and cached).
+
+The predictions below were committed before code/sim_v2.py existed (git history
+shows the order). P1 and P7 were partly known from earlier probes on the v1 code.
+
+  P1  Thermostat + bit, rewritten so that act = decoder
+        prediction: lam > 0, phi = 0, lam_off = 0 -> fails D8'
+  P2  As P1, plus a decoder call about another state, result ignored
+        prediction: phi > 0, lam_off = 0 -> fails D8'
+  P3  Forager with a decorative decoder (called, output ignored)
+        prediction: lam = 0, lam_off = 0 -> fails D8 and D8'
+  P4  Lookup-table copy of the self-simulating forager
+        prediction: same action in all 72 states; no decoder -> fails D8
+  P5  Self-simulating foragers (fixed belief, learned, learned low capacity)
+        prediction: lam_off > 0 -> pass D8'
+  P6  Thermostat with a one-step look-ahead on itself
+        prediction: lam_off > 0 -> passes D8', with a low grade
+  P7  All agents with a self part
+        prediction: gamma_do > 0; low capacity: gamma < 0.01, gamma_do > 0.05
+        -> R15 ("D3 and D8 are independent") does not survive
+  P8  Reactive forager, state re-encoded
+        prediction: the D9 split changes (hole 2, known open)
+
+Outcome: all eight hold, except the "low grade" part of P6 (its lam_off is higher
+than every forager's and rho = 1: the grade has no size term). See REPORT.md, section 15.
 """
 import functools
 import os

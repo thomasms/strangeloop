@@ -5,7 +5,7 @@ An agent has state s = (w, r): w = world part (from observation), r = self part.
   pi(w, r)      -> action           (policy)
   U(r, a, o)    -> next r           (self update; o = raw observation)
   dec(r)        -> dict w -> action (self-model: predicted own policy), or None
-Metrics (see claude/strange-loop-formalism-v0.md):
+Metrics (see REPORT.md, sections 5 and 8):
   eps     on-trajectory self-prediction error  Pr[dec(r_t)(w_t) != a_t]
   eps_cf  counterfactual error  E_r E_{w~uniform}[dec(r)(w) != pi(w, r)]
   rho     richness = 1 - eps_cf / eps_cf_const, where eps_cf_const is the

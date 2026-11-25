@@ -22,7 +22,7 @@ policy must finish in bounded time and calls its self-model on other states, the
 self-model cannot be the full policy -- a full copy would call itself again without
 end. So at the deepest level the self-model is a cheaper approximation.
 
-Also here: the adversarial agents of tests/PREDICTIONS_v2.md (P1-P8).
+Also here: the adversarial agents P1-P8 (predictions in tests/test_adversarial_v2.py).
 v1 is not changed; this file imports it.
 """
 import itertools

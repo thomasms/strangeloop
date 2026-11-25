@@ -77,7 +77,7 @@ In *Gödel, Escher, Bach* (1979) and *I Am a Strange Loop* (2007), Hofstadter ar
 - This mirrors Gödel's proof. Gödel coded statements about arithmetic as numbers, so arithmetic could make statements about itself. In the same way, a system that codes itself can refer to itself.
 - So the self is a **pattern**, not a substance. In principle it could be written as a (huge) number, like a Gödel number.
 
-An earlier project document (`claude/hofstadter-strange-loop-argument.md`) sets out Hofstadter's argument as ten premises. In short: a system that acts must model itself (P1); that self-model is lossy (P2); the cheapest summary is one unified agent, the "I" (P3); it is not literally true, a kind of useful illusion (P4); the system that uses it is the same pattern (P5, the loop); the rest covers why consciousness seems mysterious, why no extra ingredient is needed, and why the pattern can exist in any medium and comes in degrees. That document also recorded the main criticisms: the argument explains *reports* about experience, not experience itself; experience seems possible without a self (deep meditation, infants); and behavioural tests can be gamed.
+Hofstadter's argument can be set out as ten premises. In short: a system that acts must model itself (P1); that self-model is lossy (P2); the cheapest summary is one unified agent, the "I" (P3); it is not literally true, a kind of useful illusion (P4); the system that uses it is the same pattern (P5, the loop); the rest covers why consciousness seems mysterious, why no extra ingredient is needed, and why the pattern can exist in any medium and comes in degrees. The main criticisms are: the argument explains *reports* about experience, not experience itself; experience seems possible without a self (deep meditation, infants); and behavioural tests can be gamed.
 
 ### 2.3 Our aim
 
@@ -154,16 +154,87 @@ A literature search found:
 
 ### 3.5 Theories of consciousness close to this idea
 
-| Theory | Core claim | Relation to this work |
-|---|---|---|
-| Self-model theory (Metzinger, 2003) | The self is a transparent model that the system cannot recognise as a model | Closest informal theory; our "lossy self-model" is a formal version |
-| Attention schema theory (Graziano, 2013) | Awareness is the brain's simplified model of its own attention | A specific lossy self-model; fits our D1–D7 |
-| Integrated Information Theory (Tononi, 2004; Oizumi et al., 2014) | Consciousness is integrated information Φ | A rival formal theory; has the same "where does the system end" problem as our D9 |
-| Global Workspace Theory (Baars, 1988; Dehaene) | Consciousness is global broadcast of information | A rival; makes different predictions |
-| Higher-order theories (Rosenthal) | A state is conscious if there is a representation of it | Related; our self-model is a kind of higher-order representation |
-| Free energy principle (Friston, 2010, 2013) | Systems that persist minimise surprise; Markov blankets separate inside from outside | Our D9 split uses the same sensor/internal distinction |
-| Information bottleneck (Tishby et al., 1999); rate–distortion theory (Shannon) | The best lossy summary keeps only what predicts a target | Our planned route to "why one I" (section 7.2) |
-| Hard problem and meta-problem (Chalmers, 1995, 2018) | Why is there experience at all? Why do we *think* there is a hard problem? | We address structure only; the meta-problem is where Hofstadter is strongest |
+For each theory we give: its **main claim**; what it **tries to explain or prove**; what it **concludes**, also about AI; whether it is **formalised**; and how it **relates to this work**. We use three levels of formalisation:
+
+- **Full**: exact mathematical definitions, from which numbers can be computed for a given system.
+- **Partial**: computational models or formal fragments exist, but the core claim is stated in words.
+- **No**: conceptual or philosophical only.
+
+References added in this version are cited from memory and marked "not checked" in section 21.
+
+| Theory | Main claim | Formalised? | Verdict on AI (as its proponents argue) | Relation to this work |
+|---|---|---|---|---|
+| Self-model theory (Metzinger) | The self is a transparent self-model, not a thing | No | Possible in principle; argues for a moratorium because of the risk of artificial suffering | Closest informal theory; we formalise part of it |
+| Attention schema theory (Graziano) | Awareness is a simplified model of one's own attention, used to control it | Partial | Yes, if the machine has an attention schema that it uses for control | A special case of our self-model |
+| Integrated Information Theory (Tononi) | Consciousness is a maximally irreducible cause–effect structure, measured by Φ | Full | No for software on conventional computers, whatever its behaviour | The only fully formal rival; opposite predictions |
+| Global (neuronal) workspace (Baars; Dehaene) | Consciousness is global broadcast of information in a limited workspace | Partial | Yes, if the machine has a global workspace (plus self-monitoring for the full sense) | A rival; needs no self-model |
+| Higher-order theories (Rosenthal; Lau) | A state is conscious when it is represented by a suitable higher-order state | Partial | Yes, with suitable metacognitive monitoring | Our self-model is a kind of higher-order representation |
+| Free energy principle; predictive processing (Friston; Seth) | Persisting systems minimise surprise; the self is a set of predictions that keep the body alive | Full (the principle); No (the link to consciousness) | FEP: silent. Seth: probably not, without life-like self-maintenance | Same sensor/internal split as our D9 |
+| Information bottleneck; rate–distortion (Tishby; Shannon) | The best lossy summary keeps only what predicts a target | Full | Not applicable (a tool, not a theory) | Our route to "why one I" and to a size term |
+| Hard problem, meta-problem, illusionism (Chalmers; Frankish) | Why is there experience at all? Why do we *think* there is a hard problem? | No | Open; the meta-problem suggests a test | Sets the limits of what we can claim |
+
+#### 3.5.1 Self-model theory of subjectivity (Metzinger, 2003)
+
+- **Claim.** There are no selves in the world. What exists is a *phenomenal self-model*: the brain's model of the whole organism. The model is **transparent**: the system cannot experience it *as* a model, so it experiences itself as a self in direct contact with the world. The first-person perspective comes from a model of the relation between this self and its objects.
+- **Aim.** To explain self-consciousness and the first-person perspective in representational and functional terms only, using evidence from neurology and psychiatry (phantom limbs, out-of-body experiences, depersonalisation).
+- **Conclusions.** The self is a process of self-modelling, not a substance. When the self-model becomes opaque (seen as a model) or weak, the sense of self changes or disappears. On AI: artificial systems could in principle have a phenomenal self-model. Metzinger (2021) argues for a global moratorium on research that risks creating artificial suffering.
+- **Formalised?** No. The theory gives a list of constraints in words, but no definitions that can be computed.
+- **Relation.** The closest theory to ours. Our lossy self part R, read by the agent (D8′), is a formal version of a self-model that steers. We have **not** yet formalised *transparency*. A possible version: the agent has no variable that represents "R is only a model", so its self-model does not model its own errors. Our "deluded self" (λ > 0, ρ < 0) is a case where this matters.
+
+#### 3.5.2 Attention schema theory (Graziano, 2013)
+
+- **Claim.** The brain builds a simplified, schematic model of its own attention, just as it builds a body schema to control the body. Awareness is what this *attention schema* describes. When we say "I am aware of X", we report the content of the schema, which depicts a simplified, almost magical inner grasp of X.
+- **Aim.** To explain two things: (a) the **control** of attention, because control works better with a model of the thing that is controlled; and (b) why people **claim** to have subjective experience, which is an answer to the meta-problem (§3.5.8).
+- **Conclusions.** Awareness is a model of attention: accurate in outline, wrong in detail. Attention and awareness can come apart. Prediction: without awareness of a stimulus, the control of attention to it gets worse. On AI: a machine with an attention schema that it uses to control its attention would be aware in the same sense that we are. Graziano treats this as a realistic engineering target.
+- **Formalised?** Partial. The theory is stated in words. One neural-network agent shows that an attention schema improves control (Wilterson & Graziano, 2021). There is no general measure.
+- **Relation.** A special case of our theory: R is a model of attention, it is used for control (D8′), and it is simplified (Propositions 2 and 2′). AST is narrower but easier to test. Its control argument gives an independent reason for D8: a good controller must contain a model of what it controls (the "good regulator" theorem, Conant & Ashby, 1970).
+
+#### 3.5.3 Integrated Information Theory (Tononi, 2004; Oizumi et al., 2014; Albantakis et al., 2023)
+
+- **Claim.** Consciousness *is* a maximally irreducible cause–effect structure in a physical system. Its amount is the integrated information Φ: how much the causal powers of the whole exceed those of its parts.
+- **Aim.** To start from what experience is like (the *axioms*: it exists for itself, is structured, specific, unified and definite) and to derive what a physical system must be like to have it (the *postulates*). Then to explain which parts of the brain support consciousness (for example posterior cortex but not cerebellum), and to assess consciousness in patients who cannot respond.
+- **Conclusions.** Consciousness depends on the physical causal structure, not on function or behaviour. A purely feed-forward system has Φ = 0. A conventional digital computer has very low Φ, whatever software it runs, so even an exact simulation of a brain on such a computer would not be conscious (Tononi & Koch, 2015). Some simple but highly integrated structures, such as large grid-like networks, would be highly conscious. Critics take this as a sign that the theory is wrong (Aaronson, 2014). In 2023, an open letter signed by more than 100 researchers called IIT pseudoscience (Fleming et al., 2023); others disputed this.
+- **Formalised?** Full. Versions 3.0 and 4.0 give exact definitions, and Φ can be computed for small discrete systems (for example with the PyPhi software). The cost grows faster than exponentially with system size, so Φ cannot be computed for a brain.
+- **Relation.** The only fully formal rival, and it uses the same kind of discrete systems as we do. Its **exclusion** postulate (choose the grain and boundary with maximum Φ) is a principled answer to our hole 2; our planned coarse-graining fix (§19) follows the same strategy. IIT agrees with our verdict on P4: implementation matters, not only behaviour. But IIT needs no self-model, so IIT and A0 make **opposite predictions** in two cases: a highly integrated system with no self-model (IIT: conscious; A0: no), and a self-modelling program on a conventional computer (IIT: no; A0: yes).
+
+#### 3.5.4 Global workspace and global neuronal workspace (Baars, 1988; Dehaene & Changeux, 2011)
+
+- **Claim.** The mind consists of many specialised processors that work in parallel and unconsciously. Information becomes conscious when it enters a limited-capacity *global workspace* and is broadcast to all the processors at once. In the brain, this is a sudden, self-sustaining "ignition" of a network of long-range neurons in prefrontal and parietal cortex.
+- **Aim.** To explain the difference between conscious and unconscious processing of the same stimulus (masking, inattentional blindness), the limited capacity of consciousness, and why conscious contents can be reported.
+- **Conclusions.** Consciousness is global availability of information for report, reasoning and action. The theory proposes neural markers, such as late ignition at about 300 ms after a stimulus (some of these markers are disputed). On AI: Dehaene, Lau & Kouider (2017) split consciousness into C1 (global availability) and C2 (self-monitoring). They argue that a machine with both would be conscious in this sense, and that most AI at the time had neither in full. A large adversarial test of this theory against IIT challenged key predictions of both (Cogitate Consortium, 2025).
+- **Formalised?** Partial. There are neural-network simulations of ignition, and a formal model from theoretical computer science, the Conscious Turing Machine (Blum & Blum, 2022). The core claim is still stated in words, and there is no single measure.
+- **Relation.** The global workspace does not need a self-model. So it predicts consciousness in a system with global broadcast but no "I", and A0 does not. If our Plan 4 finds experience without a self, that supports the workspace theory against A0. Dehaene's C2 (self-monitoring) is close to our loop. The adversarial collaboration is a model for our own method of writing predictions down first (§14.4).
+
+#### 3.5.5 Higher-order theories (Rosenthal, 2005; Lau & Rosenthal, 2011)
+
+- **Claim.** A mental state is conscious when the subject has a suitable higher-order representation of being in that state. Versions differ on what this representation is: a higher-order *thought* (Rosenthal), a higher-order *perception*, or a system that monitors whether perceptions are real (Lau).
+- **Aim.** To explain the difference between conscious and unconscious states with the same content (for example blindsight, where people respond to things they say they do not see), and why consciousness is linked to metacognition and prefrontal cortex.
+- **Conclusions.** First-order processing is not enough; consciousness needs meta-representation. A consequence that is still debated: a higher-order state can misrepresent, so experience can be wrong about the first-order state, or exist without it. On AI: a system that monitors its own perceptual states in a suitable way could be conscious. Butlin et al. (2023) use this as one of their indicator properties.
+- **Formalised?** Partial. The theory is philosophical. Computational versions exist, for example signal-detection models of metacognition and a Bayesian "higher-order state space" (Fleming, 2020).
+- **Relation.** Our self-model is a higher-order representation, but of the agent's **whole policy**, not of single perceptual states. The HOT case of misrepresentation corresponds to our "deluded self" (λ > 0, ρ < 0). Higher-order theories do not need the representation to act back on behaviour; our D3′ and D8′ do. That loop back into action is Hofstadter's addition.
+
+#### 3.5.6 Free energy principle and predictive processing (Friston, 2010, 2013; Seth, 2021)
+
+- **Claim.** Any system that keeps itself within a bounded set of states, separated from its environment by a *Markov blanket*, behaves as if it minimises variational free energy (an upper bound on surprise). Perception and action both reduce prediction error (*active inference*).
+- **Aim.** One principle for perception, action, learning and life. The free energy principle itself is **not** a theory of consciousness. Theories of consciousness built on it include Seth's "beast machine" view: the experience of being a self comes from the brain's predictive control of the body's interior (interoception).
+- **Conclusions.** The self is, at its base, a set of predictions about the body that keep it alive. On AI: Seth argues that consciousness is tied more closely to being a living, self-maintaining system than to intelligence, so current AI is probably not conscious.
+- **Formalised?** The principle is fully mathematical (variational Bayesian inference applied to stochastic dynamics). The link to consciousness is not formalised. Critics argue that the principle cannot be falsified because it fits almost any system, and that the term "Markov blanket" is used in two different senses (Bruineberg et al., 2022).
+- **Relation.** Our D9 uses the same split between sensory and internal variables, and our open "where does the agent end?" problem is the Markov blanket problem. Seth's view challenges D9 directly: in our forager, energy is classified as *world* (sensory), but for Seth the state of the body is the core of the self.
+
+#### 3.5.7 Information bottleneck and rate–distortion theory (Shannon, 1959; Tishby et al., 1999)
+
+- **Claim.** This is a mathematical tool, not a theory of consciousness. Given a source X and a target Y, the best lossy summary of X keeps the information that predicts Y and drops the rest. There is an exact trade-off curve between the size of the summary and the error.
+- **Formalised?** Full.
+- **Relation.** This is our planned route to Proposition 3 (why one "I"; Plan 2), to the size term that the grade lacks (R22), and to the step from Corollary 2′ to "every self-model must be lossy".
+
+#### 3.5.8 Hard problem, meta-problem and illusionism (Chalmers, 1995, 2018; Frankish, 2016)
+
+- **Claim.** These are problems and positions, not mechanistic theories. The **hard problem**: why is physical processing accompanied by experience at all? Chalmers argues that functional explanations, which include all the theories above and ours, can explain functions but leave this question open. The **meta-problem**: explain, in functional terms, why we *say* and *believe* that there is a hard problem. **Illusionism** (Frankish; also Dennett) claims that solving the meta-problem is the whole job, because phenomenal consciousness, as it seems from the inside, is an introspective illusion.
+- **Conclusions.** Chalmers: a solution to the meta-problem would strongly constrain theories of consciousness, but would not by itself solve the hard problem. Illusionists: it would. On AI: the hard problem leaves the question open. The meta-problem suggests a test: does a system produce "hard problem" intuitions for functional reasons of its own, and not only because it imitates human text?
+- **Formalised?** No.
+- **Relation.** Hofstadter is close to illusionism (premise P4: the "I" is a useful illusion). Our A0-weak (§19) is a meta-problem claim and can be tested. A0-strong faces the hard problem, and no structural theory, including ours, can settle it alone.
+
+> **In plain words:** The theories fall into three families. **Self-model theories** (Metzinger, Graziano, Hofstadter, and this work) say that the self, and perhaps consciousness, comes from a system that models itself. **Access theories** (global workspace, higher-order) say that a state is conscious when it is broadcast widely or represented by a higher-level state. **Causal-structure theories** (IIT) say that consciousness is a property of how the physical parts cause each other. The free energy principle is a general framework, rate–distortion theory is a mathematical tool, and the hard problem marks what no theory has yet explained. Only IIT is fully formalised as a theory of consciousness. This work tries to make a self-model theory just as exact, so that it can be tested against IIT and the others.
 
 ### 3.6 What is new in this work
 
@@ -374,7 +445,7 @@ We first checked the definitions on paper.
 
 ## 8. Simulation v0
 
-Code: `code/sim_v0.py`. Output: `results/sim_v0_output.md`. 200 episodes × 200 steps per agent, plus exhaustive checks over all states.
+Code: `code/sim_v0.py`. Output: `results/sim_v0_output.txt`. 200 episodes × 200 steps per agent, plus exhaustive checks over all states.
 
 ### 8.1 Worlds
 
@@ -531,7 +602,7 @@ Three versions were tested:
 
 ## 11. Simulation v1
 
-Code: `code/sim_v1.py`. Output: `results/sim_v1_output.md`. Same worlds and episode lengths as v0. λ uses 20 random scrambles on every 7th logged state (up to 4000 states).
+Code: `code/sim_v1.py`. Output: `results/sim_v1_output.txt`. Same worlds and episode lengths as v0. λ uses 20 random scrambles on every 7th logged state (up to 4000 states).
 
 ### 11.1 Results
 
@@ -676,7 +747,7 @@ Let P be a program that computes π. On input s, P queries a self-model D at a f
 
 ### 14.4 Method: predictions written before the code (fix for hole 6)
 
-For v2 we wrote the predictions down and committed them (`tests/PREDICTIONS_v2.md`) **before** the v2 code existed. Git history shows the order. P1 and P7 were partly known from the probes of §13. Each prediction became an automatic test (`tests/test_adversarial_v2.py`).
+For v2 we wrote the predictions down and committed them **before** the v2 code existed. Git history shows the order. P1 and P7 were partly known from the probes of §13. Each prediction became an automatic test; the predictions are kept in the header of `tests/test_adversarial_v2.py`.
 
 | # | Agent | Prediction |
 |---|---|---|
@@ -695,7 +766,7 @@ For v2 we wrote the predictions down and committed them (`tests/PREDICTIONS_v2.m
 
 ## 15. Simulation v2
 
-Code: `code/sim_v2.py` (imports `sim_v1.py`, which is not changed). Output: `results/sim_v2_output.md`. Tests: `tests/test_adversarial_v2.py`. Same worlds, 200 episodes × 200 steps, seed 0. γ_do, φ, λ and λ_off use every 7th logged state (up to 4000) and 20 scrambles. In v2, the scramble table is keyed on what the decoder actually reads.
+Code: `code/sim_v2.py` (imports `sim_v1.py`, which is not changed). Output: `results/sim_v2_output.txt`. Tests: `tests/test_adversarial_v2.py`. Same worlds, 200 episodes × 200 steps, seed 0. γ_do, φ, λ and λ_off use every 7th logged state (up to 4000) and 20 scrambles. In v2, the scramble table is keyed on what the decoder actually reads.
 
 **New agents.** P1, P2 and P6 are thermostats; P3, P4 and P8 are foragers in the ring world (see the table in §14.4). The look-ahead thermostat (P6) uses a crude model in which "on" moves the temperature up one bin and "off" moves it down one bin. For each action, it asks its own self-model what it will do in the predicted next state, and scores 1 for each predicted step in the "ok" bin (the second step weighted 0.8).
 
@@ -903,14 +974,25 @@ Symbols: ε self-prediction error; ε_cf counterfactual error; ρ richness; κ c
 
 ## 21. References
 
+- Aaronson, S. (2014). Why I am not an integrated information theorist (or, the unconscious expander). *Shtetl-Optimized* (blog). (cited from memory, not checked)
+- Albantakis, L., et al. (2023). Integrated information theory (IIT) 4.0: formulating the properties of phenomenal existence in physical terms. *PLoS Computational Biology*, 19(10), e1011465. (cited from memory, not checked)
 - Ay, N., & Polani, D. (2008). Information flows in causal networks. *Advances in Complex Systems*, 11(1), 17–41. (cited from memory, not checked)
 - Baars, B. J. (1988). *A Cognitive Theory of Consciousness*. Cambridge University Press.
 - Binder, F. J., et al. (2024). Looking inward: language models can learn about themselves by introspection. arXiv:2410.13787. (cited from memory, not checked)
+- Blum, L., & Blum, M. (2022). A theory of consciousness from a theoretical computer science perspective: insights from the Conscious Turing Machine. *PNAS*, 119(21), e2115934119. (cited from memory, not checked)
 - Boolos, G. (1993). *The Logic of Provability*. Cambridge University Press.
+- Bruineberg, J., Dołęga, K., Dewhurst, J., & Baltieri, M. (2022). The emperor's new Markov blankets. *Behavioral and Brain Sciences*, 45, e183. (cited from memory, not checked)
 - Butlin, P., Long, R., et al. (2023). Consciousness in artificial intelligence: insights from the science of consciousness. arXiv:2308.08708. (cited from memory, not checked)
 - Casali, A. G., et al. (2013). A theoretically based index of consciousness independent of sensory processing and behavior. *Science Translational Medicine*, 5(198), 198ra105. (cited from memory, not checked)
 - Chalmers, D. J. (1995). Facing up to the problem of consciousness. *Journal of Consciousness Studies*, 2(3), 200–219.
 - Chalmers, D. J. (2018). The meta-problem of consciousness. *Journal of Consciousness Studies*, 25(9–10), 6–61.
+- Cogitate Consortium (2025). Adversarial testing of global neuronal workspace and integrated information theories of consciousness. *Nature*. (cited from memory, not checked)
+- Conant, R. C., & Ashby, W. R. (1970). Every good regulator of a system must be a model of that system. *International Journal of Systems Science*, 1(2), 89–97. (cited from memory, not checked)
+- Dehaene, S., & Changeux, J.-P. (2011). Experimental and theoretical approaches to conscious processing. *Neuron*, 70(2), 200–227. (cited from memory, not checked)
+- Dehaene, S., Lau, H., & Kouider, S. (2017). What is consciousness, and could machines have it? *Science*, 358(6362), 486–492. (cited from memory, not checked)
+- Fleming, S. M. (2020). Awareness as inference in a higher-order state space. *Neuroscience of Consciousness*, 2020(1), niz020. (cited from memory, not checked)
+- Fleming, S. M., et al. (2023). The integrated information theory of consciousness as pseudoscience. *PsyArXiv* preprint. (cited from memory, not checked)
+- Frankish, K. (2016). Illusionism as a theory of consciousness. *Journal of Consciousness Studies*, 23(11–12), 11–39. (cited from memory, not checked)
 - Friston, K. (2010). The free-energy principle: a unified brain theory? *Nature Reviews Neuroscience*, 11, 127–138.
 - Friston, K. (2013). Life as we know it. *Journal of the Royal Society Interface*, 10, 20130475.
 - Gallagher, S. (2000). Philosophical conceptions of the self: implications for cognitive science. *Trends in Cognitive Sciences*, 4(1), 14–21. (cited from memory, not checked)
@@ -919,24 +1001,28 @@ Symbols: ε self-prediction error; ε_cf counterfactual error; ρ richness; κ c
 - Hoel, E. P., Albantakis, L., & Tononi, G. (2013). Quantifying causal emergence shows that macro can beat micro. *PNAS*, 110(49), 19790–19795. (cited from memory, not checked)
 - Hofstadter, D. R. (1979). *Gödel, Escher, Bach: An Eternal Golden Braid*. Basic Books.
 - Hofstadter, D. R. (2007). *I Am a Strange Loop*. Basic Books.
-- Hofstadter, D. R. (2026). Is there an "I" in AI? *Philosophical Transactions of the Royal Society A*, 384(2320). doi:10.1098/rsta.2024.0527 (summarised in the project doc `claude/hofstadter-strange-loop-argument.md`).
+- Hofstadter, D. R. (2026). Is there an "I" in AI? *Philosophical Transactions of the Royal Society A*, 384(2320). doi:10.1098/rsta.2024.0527.
 - Kim, C.-E. (2025). A recursive stability model of qualia: philosophical self-reference, neural attractor structures, and experimental exploration in LLMs. Poster P133, CNS 2025, Florence.
 - Kleene, S. C. (1938). On notation for ordinal numbers. *Journal of Symbolic Logic*, 3(4), 150–155.
+- Lau, H., & Rosenthal, D. (2011). Empirical support for higher-order theories of conscious awareness. *Trends in Cognitive Sciences*, 15(8), 365–373. (cited from memory, not checked)
 - Lawvere, F. W. (1969). Diagonal arguments and cartesian closed categories. *Lecture Notes in Mathematics*, 92, 134–145. Springer.
 - Lindsey, J. (2025). Emergent introspective awareness in large language models. *Transformer Circuits Thread*, Anthropic. (cited from memory, not checked)
 - Löb, M. H. (1955). Solution of a problem of Leon Henkin. *Journal of Symbolic Logic*, 20(2), 115–118.
 - Metzinger, T. (2003). *Being No One: The Self-Model Theory of Subjectivity*. MIT Press.
+- Metzinger, T. (2021). Artificial suffering: an argument for a global moratorium on synthetic phenomenology. *Journal of Artificial Intelligence and Consciousness*, 8(1), 43–66. (cited from memory, not checked)
 - Oizumi, M., Albantakis, L., & Tononi, G. (2014). From the phenomenology to the mechanisms of consciousness: Integrated Information Theory 3.0. *PLoS Computational Biology*, 10(5), e1003588.
 - Putnam, H. (1988). *Representation and Reality*. MIT Press.
 - Rosas, F. E., Mediano, P. A. M., Jensen, H. J., Seth, A. K., Barrett, A. B., Carhart-Harris, R. L., & Bor, D. (2020). Reconciling emergences: an information-theoretic approach to identify causal emergence in multivariate data. *PLoS Computational Biology*, 16(12), e1008289. (cited from memory, not checked)
 - Rosenthal, D. M. (2005). *Consciousness and Mind*. Oxford University Press.
+- Seth, A. (2021). *Being You: A New Science of Consciousness*. Faber & Faber.
 - Shannon, C. E. (1959). Coding theorems for a discrete source with a fidelity criterion. *IRE National Convention Record*, 7(4), 142–163.
-- "Strange Loop Model" (2021). *Frontiers in Ecology and Evolution*, doi:10.3389/fevo.2021.802300 (title and authors not checked in this session).
+- "Strange Loop Model" (2021). *Frontiers in Ecology and Evolution*, doi:10.3389/fevo.2021.802300 (title and authors not checked).
 - Szangolies, J. (2018). Von Neumann minds: A toy model of meaning in a natural world. In A. Aguirre, B. Foster & Z. Merali (Eds.), *Wandering Towards a Goal* (pp. 29–39). Springer.
 - Szangolies, J. (2023). Self-reference, self-representation, and the logic of intentionality. *Erkenntnis*, 88(6), 2561–2590. doi:10.1007/s10670-021-00467-w. Preprint: https://www.academia.edu/50989457/Self_Reference_Self_Representation_and_the_Logic_of_Intentionality
 - Szangolies, J. (n.d., c. 2021–22). Mind the matter: consciousness as self-representational access. *3 Quarks Daily* (date not checked). https://3quarksdaily.com/?p=205459
 - Tishby, N., Pereira, F. C., & Bialek, W. (1999). The information bottleneck method. *Proc. 37th Allerton Conference*, 368–377.
 - Tononi, G. (2004). An information integration theory of consciousness. *BMC Neuroscience*, 5, 42.
+- Tononi, G., & Koch, C. (2015). Consciousness: here, there and everywhere? *Philosophical Transactions of the Royal Society B*, 370(1668), 20140167. (cited from memory, not checked)
 - von Neumann, J. (1966). *Theory of Self-Reproducing Automata* (A. W. Burks, Ed.). University of Illinois Press.
 - Wilterson, A. I., & Graziano, M. S. A. (2021). The attention schema theory in a neural network agent: controlling visuospatial attention using a descriptive model of attention. *PNAS*, 118(33), e2102421118. (cited from memory, not checked)
 - Yanofsky, N. S. (2003). A universal approach to self-referential paradoxes, incompleteness and fixed points. *Bulletin of Symbolic Logic*, 9(3), 362–386.
@@ -953,8 +1039,7 @@ All code is plain Python 3 with no dependencies.
 | `code/sim_v1.py` | Formalism v1: variable-based agents, D9 intrinsic split, D8 decoder intervention λ, self-simulating forager, D5 self-fitting fixed point |
 | `code/sim_v2.py` | Formalism v2 step 1: γ_do (D3′), φ and λ_off (D8′), adversarial agents P1–P8 (imports `sim_v1.py`) |
 | `tests/test_results.py` | Checks that the v0/v1 results (R4, R5, R7, R9–R12, and the v1 numbers behind R15) still hold |
-| `tests/PREDICTIONS_v2.md` | v2 predictions, committed before the v2 code, and their outcome |
-| `tests/test_adversarial_v2.py` | Checks predictions P1–P8 (about 15 s) |
+| `tests/test_adversarial_v2.py` | The v2 predictions P1–P8 (in its header) and their checks (about 15 s) |
 
 Run from the repository root:
 
@@ -985,4 +1070,4 @@ python3 tests/test_adversarial_v2.py
 
 ## Appendix B. Raw outputs
 
-The exact outputs of the three scripts are stored in `results/sim_v0_output.md`, `results/sim_v1_output.md` and `results/sim_v2_output.md`. All numbers in sections 8, 11 and 15 come from these files (seed 0). Numbers in §13 come from the same agents, now in `sim_v2.py`.
+The exact outputs of the three scripts are stored in `results/sim_v0_output.txt`, `results/sim_v1_output.txt` and `results/sim_v2_output.txt`. All numbers in sections 8, 11 and 15 come from these files (seed 0). Numbers in §13 come from the same agents, now in `sim_v2.py`.
