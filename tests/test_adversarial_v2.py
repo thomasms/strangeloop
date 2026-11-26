@@ -1,5 +1,5 @@
 """
-Adversarial checks for v2 (REPORT.md, sections 14.4 and 15).
+Adversarial checks for v2 (REPORT.md, section 7.6).
 Run from the repository root:  python3 tests/test_adversarial_v2.py   (or: pytest tests)
 Takes about 15 s (all agents are evaluated once and cached).
 
@@ -25,7 +25,7 @@ shows the order). P1 and P7 were partly known from earlier probes on the v1 code
         prediction: the D9 split changes (hole 2, known open)
 
 Outcome: all eight hold, except the "low grade" part of P6 (its lam_off is higher
-than every forager's and rho = 1: the grade has no size term). See REPORT.md, section 15.
+than every forager's and rho = 1: the grade has no size term). See REPORT.md, section 7.6.
 """
 import functools
 import os
